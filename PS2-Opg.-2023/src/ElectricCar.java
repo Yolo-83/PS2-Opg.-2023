@@ -1,37 +1,51 @@
-public class ElectricCar extends ACar {
+public class DieselCar extends AFuelCar {
+    final boolean hasParticleFilter;
 
-    private int batteryCapacityKWh; // returns the battery capacity in kilowatt-hours
-    private int maxRangeKm; // returns the maximum range in kilometres.
-    private int whPrKm; // returns the power consumption in watt-hours per driven kilometre.
-
-    public ElectricCar (String make, String model, String registrationNumber, int numberOfDoors,
-                        int batteryCapacityKWh, int maxRangeKm) {
-        super (make, model, registrationNumber, numberOfDoors);
-        this.batteryCapacityKWh = batteryCapacityKWh;
-        this.maxRangeKm = maxRangeKm;
-        this.whPrKm = batteryCapacityKWh/maxRangeKm;
+    public DieselCar (String make, String model, String registrationNumber, int numberOfDoors, int kmPrLitre,
+                     boolean hasParticleFilter) {
+        super (make, model, registrationNumber, numberOfDoors, kmPrLitre);
+        this.hasParticleFilter = hasParticleFilter;
     }
 
     @Override
     public String getFuelType() {
-        return "Electric";
+        return "Diesel";
     }
 
-    public int getBatteryCapacityKWh() {
-        return batteryCapacityKWh;
+    public boolean hasParticleFilter() {
+        return hasParticleFilter;
     }
-
-    public int getMaxRangeKm() {
-        return maxRangeKm;
-    }
-
-    public int getWhPrKm() {
-        return whPrKm;
-    }
-
 
     @Override
     public int getRegistrationFee() {
-        return 0;
+        int registrationFee = 0;
+        if (getKmPrLitre() >= 20 && getKmPrLitre() < 50){
+            registrationFee = 330+130;
+        } else if (getKmPrLitre() >= 15 && getKmPrLitre() < 20) {
+            registrationFee = 1050+1390;
+        } else if (getKmPrLitre() >= 10 && getKmPrLitre() < 15) {
+            registrationFee = 2340+1850;
+        } else if (getKmPrLitre() >= 5 && getKmPrLitre() < 10 ) {
+            registrationFee = 5500+2770;
+        } else if (getKmPrLitre() < 5 ) {
+            registrationFee = 10470+15260;
+        } if (!hasParticleFilter) {
+            return registrationFee + 1000;
+        } else {
+            return registrationFee;
+        }
+
+    }
+
+    @Override
+    public String toString() {
+        return getFuelType() + " Car Details:" +
+                "\n Brand: " + getMake() +
+                "\n Model: " + getModel() +
+                "\n Number plate: " + getRegistrationNumber() +
+                "\n Number of doors: " + getNumberOfDoors() +
+                "\n Particle filter: " + hasParticleFilter() +
+                "\n Registration fee: " + getRegistrationFee() +
+                "\n";
     }
 }
